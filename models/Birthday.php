@@ -85,7 +85,7 @@ class Birthday
     }
 
     // Modify only dates birthdays
-    public function update($id_birthday, $date_birthday)
+    public function update($id_birthday, $birthdate)
     {
         $query = "UPDATE " . $this->table_name . " 
                   SET date_birthday = :date_birthday 
@@ -95,10 +95,10 @@ class Birthday
             $stmt = $this->conn->prepare($query);
 
             // Clean data
-            $date_birthday = htmlspecialchars(strip_tags($date_birthday['date_birthday']));
+            $birthdate = htmlspecialchars(strip_tags($birthdate));
 
             // Bind parameters
-            $stmt->bindParam(':date_birthday', $date_birthday);
+            $stmt->bindParam(':date_birthday', $birthdate);
             $stmt->bindParam(':id_birthday', $id_birthday);
 
             if ($stmt->execute()) {

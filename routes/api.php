@@ -1,6 +1,9 @@
 <?php
 
-// Definir rutas API
+require_once '../public/Router.php';  
+
+// Define API routes
+$router = new Router();
 $router->get('/cumpleaños', 'BirthdayController@index');
 $router->get('/cumpleaños/{id}', 'BirthdayController@show');
 $router->post('/cumpleaños', 'BirthdayController@store');
