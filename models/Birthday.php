@@ -27,9 +27,9 @@ class Birthday
 
             return $stmt;
         } catch (PDOException $exception) {
-            // Managment errors: would register error or to show an adecuate mesage
+            // Handle errors
             echo "Error: " . $exception->getMessage();
-            return false; // operation fault
+            return false; // Indicate that the operation failed
         }
     }
 
@@ -50,9 +50,9 @@ class Birthday
 
             return $stmt;
         } catch (PDOException $exception) {
-            // Managment errors: would register error or to show an adecuate mesage
+            // Handle errors
             echo "Error: " . $exception->getMessage();
-            return false; // operation fault
+            return false; // Indicate that the operation failed
         }
     }
 
@@ -130,7 +130,7 @@ class Birthday
 
             return false; // Indicate that the update failed
         } catch (PDOException $exception) {
-            // Manejo de errores
+            // Handle errors
             echo "Error: " . $exception->getMessage();
             return false; // Indicate that the operation failed
         }
