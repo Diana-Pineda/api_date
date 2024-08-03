@@ -1,29 +1,138 @@
 <?php
 
-class Birthday {
-    private $db;
+require_once 'config/database.php';
 
-    public function __construct($db) {
-        $this->db = $db;
+class Birthday
+{
+    private $conn;
+    private $table_name = "birthdays";
+
+    public $id_birthday;
+    public $id_user_birthday;
+    public $date_birthday;
+
+    public function __construct($db)
+    {
+        $this->conn = $db;
     }
 
-    public function getAll() {
-        // Lógica para obtener todos los registros de cumpleaños
+    // Retrieve all birthday records from the table
+    public function read()
+    {
+        $query = "SELECT id_birthday, id_user_birthday, date_birthday FROM " . $this->table_name;
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+
+            return $stmt;
+        } catch (PDOException $exception) {
+            // Managment errors: would register error or to show an adecuate mesage
+            echo "Error: " . $exception->getMessage();
+            return false; // operation fault
+        }
     }
 
-    public function getById($id) {
-        // Lógica para obtener un registro de cumpleaños por ID
+    // Retrieve a specific birthday record by user ID
+    public function getById($id_user_birthday)
+    {
+        $query = "SELECT id_birthday, id_user_birthday, date_birthday 
+              FROM " . $this->table_name . " 
+              WHERE id_user_birthday = :id_user_birthday";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+
+            // Bind the parameter
+            $stmt->bindParam(':id_user_birthday', $id_user_birthday);
+
+            $stmt->execute();
+
+            return $stmt;
+        } catch (PDOException $exception) {
+            // Managment errors: would register error or to show an adecuate mesage
+            echo "Error: " . $exception->getMessage();
+            return false; // operation fault
+        }
     }
 
-    public function create($data) {
-        // Lógica para crear un nuevo registro de cumpleaños
+    // Insert a new birthday record into the birthdays table
+    public function create()
+    {
+        $query = "INSERT INTO " . $this->table_name . " SET id_user_birthday=:id_user_birthday, date_birthday=:date_birthday";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+
+            // Clean data 
+            $this->id_user_birthday = htmlspecialchars(strip_tags($this->id_user_birthday));
+            $this->date_birthday = htmlspecialchars(strip_tags($this->date_birthday));
+
+            // Bind parameters
+            $stmt->bindParam(':id_user_birthday', $this->id_user_birthday);
+            $stmt->bindParam(':date_birthday', $this->date_birthday);
+
+            if ($stmt->execute()) {
+                return true; // Indicate that the update was successful
+            }
+
+            return false; // Indicate that the update failed
+        } catch (PDOException $exception) {
+            // Handle errors 
+            echo "Error: " . $exception->getMessage();
+            return false; // Indicate that the operation failed
+        }
     }
 
-    public function update($id, $data) {
-        // Lógica para actualizar un registro de cumpleaños
+    // Modify only dates birthdays
+    public function update($id_birthday, $date_birthday)
+    {
+        $query = "UPDATE " . $this->table_name . " 
+                  SET date_birthday = :date_birthday 
+        WHERE id_birthday = :id_birthday";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+
+            // Clean data
+            $date_birthday = htmlspecialchars(strip_tags($date_birthday['date_birthday']));
+
+            // Bind parameters
+            $stmt->bindParam(':date_birthday', $date_birthday);
+            $stmt->bindParam(':id_birthday', $id_birthday);
+
+            if ($stmt->execute()) {
+                return true; // Indicate that the update was successful
+            }
+
+            return false; // Indicate that the update failed
+        } catch (PDOException $exception) {
+            // Handle errors 
+            echo "Error: " . $exception->getMessage();
+            return false; // Indicate that the operation failed
+        }
     }
 
-    public function delete($id) {
-        // Lógica para eliminar un registro de cumpleaños
+    // Delete a specific birthday record
+    public function delete($id_birthday)
+    {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id_birthday = :id_birthday";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+
+            // Bind parameters
+            $stmt->bindParam(':id_birthday', $id_birthday);
+
+            if ($stmt->execute()) {
+                return true; // Indicate that the update was successful
+            }
+
+            return false; // Indicate that the update failed
+        } catch (PDOException $exception) {
+            // Manejo de errores
+            echo "Error: " . $exception->getMessage();
+            return false; // Indicate that the operation failed
+        }
     }
 }
