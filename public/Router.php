@@ -47,10 +47,22 @@ class Router
         foreach ($this->routes[$method] as $route => $action) {
             // Check if route matches the URI
             if ($route === $uri) {
-                list($controller, $method) = explode('@', $action);
-                $controller = new $controller($this->conn);
-                $controller->$method();
-                return;
+                list($controllerName, $methodName) = explode('@', $action);
+                if (class_exists($controllerName)) {
+                    $controller = new $controllerName($this->conn);
+                    if (method_exists($controller, $methodName)) {
+                        $controller->$methodName();
+                        return;
+                    } else {
+                        http_response_code(500);
+                        echo json_encode(['message' => 'Method not found']);
+                        return;
+                    }
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['message' => 'Controller not found']);
+                    return;
+                }
             }
         }
 
