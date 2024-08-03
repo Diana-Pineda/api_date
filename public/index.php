@@ -1,12 +1,13 @@
 <?php
 
 // Include the necessary files
-require_once '../config/database.php';
-require_once '../controllers/BirthdayController.php';
-require_once '../models/Birthday.php';
-require_once 'Router.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../controllers/BirthdayController.php';
+require_once __DIR__ . '/../models/Birthday.php';
+require_once __DIR__ . '/Router.php';
+
 // Initialize the routes from the api.php file
-require_once '../routes/api.php';
+require_once __DIR__ . '/../routes/api.php';
 
 // Create a new instance of the Database class and get the database connection
 $database = new Database();

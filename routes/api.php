@@ -1,6 +1,6 @@
 <?php
 
-require_once '../public/Router.php';  
+require_once __DIR__ . '/../public/Router.php';
 
 // Define API routes
 $router = new Router();
