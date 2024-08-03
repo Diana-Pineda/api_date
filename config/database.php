@@ -2,8 +2,8 @@
 class Database {
 private $host = "localhost";
 private $db_name = "bs_api_birthdays";
-private $username = "user";
-private $password = "pass";
+private $username = "root";
+private $password = "";
 public $conn;
 
 public function getConnection() {
