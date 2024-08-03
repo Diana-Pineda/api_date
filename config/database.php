@@ -1,7 +1,7 @@
 <?php
 class Database {
 private $host = "localhost";
-private $db_name = "data_base_name";
+private $db_name = "bs_api_birthdays";
 private $username = "user";
 private $password = "pass";
 public $conn;
